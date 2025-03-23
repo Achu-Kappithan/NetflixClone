@@ -1,0 +1,32 @@
+ 
+<div class="container min-w-full px-20 mt-14 mb-20">
+    <p class="font-semibold text-2xl my-3 ml-3">Popular Movies</p>
+  
+    <div #swiperContainer class="swiper-container">
+      <div class="swiper-wrapper max-w-full overflow-hidden overflow-x-auto">
+        <ng-container *ngFor="let movie of fullMovies">
+          <div class="swiper-slide relative">
+            <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                 [alt]="movie.title" class="w-full h-[300px] object-cover" />
+            
+            <div class="desc p-2">
+              <span class="text-base flex flex-wrap font-bold">{{ movie.title }}</span>
+              <p class="text-xs my-3">{{ movie.overview }}...</p>
+  
+              <div class="py-3 absolute w-[90%] bottom-1">
+                <p class="text-xs flex justify-between items-center">
+                  <span class="text-green-500">Vote Average: {{ movie.vote_average.toFixed(1) }}</span>
+                  <i class="fa fa-2x fa-chevron-circle-down" aria-hidden="true"></i>
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+  
