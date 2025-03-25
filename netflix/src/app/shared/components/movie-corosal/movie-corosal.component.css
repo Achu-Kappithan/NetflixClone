@@ -40,6 +40,10 @@
     transition-delay: 300ms;
     z-index: 1;
   }
+
+  .swiper-wrapper::-webkit-scrollbar {
+    display: none;
+  }
   
   .swiper-slide:hover img {
     transition-delay: 300ms;

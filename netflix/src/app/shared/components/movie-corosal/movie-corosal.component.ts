@@ -3,17 +3,22 @@ import { AfterViewInit, Component, ElementRef, inject, Input, OnChanges, OnInit,
 import Swiper from 'swiper';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
+import { DiscriptionPipe } from '../../pipes/discription.pipe';
+import { ShowPrivewService } from '../../services/show-privew.service';
+
 
 @Component({
   selector: 'app-movie-corosal',
-  imports: [NgFor],
+  imports: [NgFor,DiscriptionPipe],
   templateUrl: './movie-corosal.component.html',
   styleUrl: './movie-corosal.component.css',
   standalone: true
 })
 export class MovieCorosalComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() movies: number[] = []; 
+  @Input() category: 'popular' | 'top_rated' | 'trending' = 'popular'
   http = inject(HttpClient);
+  showPrivew =inject(ShowPrivewService)
 
   @ViewChild('swiperContainer') swiperContainer!: ElementRef;
   fullMovies: any[] = []; 
@@ -22,8 +27,7 @@ export class MovieCorosalComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['movies']) {
-      console.log("Movies Updated:", this.movies); 
-      this.fetchMovieDetails();  // Fetch movie details when movies change
+      this.fetchMovieDetails();  
     }
   }
 
@@ -35,17 +39,23 @@ export class MovieCorosalComponent implements OnInit, AfterViewInit, OnChanges {
     const API_KEY = 'a55f8821d041d97b59437de4af51cfd1';
     const baseUrl = 'https://api.themoviedb.org/3/movie/';
   
-    if (!this.movies || this.movies.length === 0) return;
+    if (!this.movies) return;
   
     const movieRequests = this.movies.map(movieId =>
       this.http.get(`${baseUrl}${movieId}?api_key=${API_KEY}`)
     );
   
     forkJoin(movieRequests).subscribe(movieDetails => {
-      console.log("Fetched Movies:", movieDetails);
       this.fullMovies = movieDetails; 
-      this.initSwiper(); // Reinitialize Swiper after updating movies
+      if (this.fullMovies.length > 0) {
+        this.showPrivew.setSelectedMove(this.fullMovies[0]);
+      }
+      this.initSwiper(); 
     });
+  }
+
+  playMovie(movie:any){
+    this.showPrivew.setSelectedMove(movie)
   }
 
   private initSwiper() {
@@ -64,6 +74,6 @@ export class MovieCorosalComponent implements OnInit, AfterViewInit, OnChanges {
           1800: { slidesPerView: 5, slidesPerGroup: 6, spaceBetween: 5, centeredSlides: false },
         }
       });
-    }, 500); // Delay to ensure movies are loaded before Swiper initialization
+    }, 500); 
   }
 }
