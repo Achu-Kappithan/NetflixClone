@@ -34,7 +34,32 @@ export class MovieCorosalComponent implements OnInit, AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.initSwiper();
   }
-
+  private initSwiper() {
+    setTimeout(() => {
+      if (!this.swiperContainer || !this.swiperContainer.nativeElement) {
+        console.error("Swiper container not found!");
+        return;
+      }
+      
+      new Swiper(this.swiperContainer.nativeElement, {
+        slidesPerGroup: 2,
+        slidesPerView: 5,
+        spaceBetween: 10,
+        centeredSlides: true,
+        loop: true,
+        breakpoints: {
+          600: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 5, centeredSlides: true },
+          900: { slidesPerView: 3, slidesPerGroup: 3, spaceBetween: 5, centeredSlides: true },
+          1200: { slidesPerView: 4, slidesPerGroup: 4, spaceBetween: 5, centeredSlides: false },
+          1500: { slidesPerView: 5, slidesPerGroup: 5, spaceBetween: 5, centeredSlides: false },
+          1800: { slidesPerView: 5, slidesPerGroup: 6, spaceBetween: 5, centeredSlides: false },
+        }
+      });
+    }, 500);
+  }
+  playMovie(movie:any){
+    this.showPrivew.setSelectedMove(movie)
+  }
   private fetchMovieDetails() {
     const API_KEY = 'a55f8821d041d97b59437de4af51cfd1';
     const baseUrl = 'https://api.themoviedb.org/3/movie/';
@@ -52,28 +77,5 @@ export class MovieCorosalComponent implements OnInit, AfterViewInit, OnChanges {
       }
       this.initSwiper(); 
     });
-  }
-
-  playMovie(movie:any){
-    this.showPrivew.setSelectedMove(movie)
-  }
-
-  private initSwiper() {
-    setTimeout(() => {
-      new Swiper(this.swiperContainer.nativeElement, {
-        slidesPerGroup: 2,
-        slidesPerView: 5,
-      spaceBetween: 10,
-        centeredSlides: true,
-        loop: true,
-        breakpoints: {
-          600: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 5, centeredSlides: true },
-          900: { slidesPerView: 3, slidesPerGroup: 3, spaceBetween: 5, centeredSlides: true },
-          1200: { slidesPerView: 4, slidesPerGroup: 4, spaceBetween: 5, centeredSlides: false },
-          1500: { slidesPerView: 5, slidesPerGroup: 5, spaceBetween: 5, centeredSlides: false },
-          1800: { slidesPerView: 5, slidesPerGroup: 6, spaceBetween: 5, centeredSlides: false },
-        }
-      });
-    }, 500); 
   }
 }

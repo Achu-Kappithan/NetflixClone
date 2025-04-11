@@ -15,9 +15,9 @@ export class BrowseComponent implements OnInit {
   auth = inject(AuthService)
   movieService = inject(MovieServiceService);
 
-  popularMOvies:number[] = []
+  popularMOvies:any[] = []
   topRatedMovies: any[] = [];
-  upcoming: number[] = [];
+  upcoming: any[] = [];
 
 
   ngOnInit(): void {
